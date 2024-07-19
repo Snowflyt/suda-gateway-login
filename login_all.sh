@@ -22,8 +22,7 @@ for ip in $all_ips; do
   fi
 done
 
-# Login to the gateway using the given username and password
-# IP can be specified if your computer has multiple network interfaces, defaults to the first IP address returned by `hostname -I` (Linux) or `ifconfig` (macOS)
+# Login to the gateway using the given username, password and IPv4 address
 login() {
   username="$1"
   password="$2"
