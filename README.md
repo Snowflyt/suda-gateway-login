@@ -18,6 +18,10 @@ bash login.sh <username> <password> [<ip>]
 bash login.sh 2030123456 123456
 ```
 
+> [!NOTE]
+>
+> 如果你使用中国移动/中国联通/中国电信提供的校园网服务，也可使用本脚本登陆，只需在用户名后加上相应的后缀即可——中国移动使用的后缀为 `@zgyd`；中国联通使用 `@cucc`；中国电信使用 `@ctc`. 例如，一个中国移动校园网用户的用户名可能是 `20241234567@zgyd`。
+
 仓库也提供了 [login_all.sh](./login_all.sh)，它会提取 `hostname -I` (Linux) 或 `ipconfig` (macOS) 命令获取的所有 IPv4 地址，然后依次尝试登录网关。使用方法如下：
 
 ```bash
