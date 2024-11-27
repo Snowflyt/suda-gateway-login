@@ -1,8 +1,10 @@
 # suda-gateway-login
 
-一个简单的 Bash 脚本，用于通过命令行直接登录苏州大学网关（校园网），适用于 Linux 与 macOS.
+一个简单的 Bash/PowerShell 脚本，用于通过命令行直接登录苏州大学网关（校园网），适用于 Windows、macOS 与 Linux。
 
 ## 使用说明
+
+### 对于 macOS/Linux 用户
 
 仓库提供了 [login.sh](./login.sh) 用于登录苏州大学网关，它的使用方法如下：
 
@@ -41,17 +43,22 @@ sudo chmod +x /usr/local/bin/login_suda_gateway
 login_suda_gateway <username> <password>
 ```
 
-### windows版本：  
-使用如下命令，在cmd中执行powershell脚本  
-`powershell -ExecutionPolicy Bypass -File "./login.ps1" <username> <password>`  
-可以将该命令写进bat用cmd执行，或者直接使用powershell执行ps1脚本
+### 对于 Windows 用户
 
-windows版本提取ip是通过所有启用的网络适配器并匹配"无线局域网适配器"字段搜索无线网卡的ip，如果是笔记本用户并且只有一个网卡应该能正确读取到ip，如果是使用网线的用户可以更改`wlanAdapter`变量中的` $_.Name -like `为其他适配器的字段  
+> 感谢 [@acceleractor](https://github.com/acceleractor) 贡献的 Windows 版本 PowerShell 脚本。
 
+仓库提供了 [login.ps1](./login.ps1) 用于登录苏州大学网关，它的使用方法如下：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "./login.ps1" <username> <password>
+```
+
+可以将该命令写进 bat 用 Cmd 执行，或者直接使用 PowerShell 执行 ps1 脚本。
+
+Windows 版本提取 IP 是通过所有启用的网络适配器并匹配“无线局域网适配器“字段搜索无线网卡的 IP，如果是笔记本用户并且只有一个网卡应该能正确读取到 IP，如果是使用网线的用户可以更改 `wlanAdapter` 变量中的 `$_.Name -like` 为其他适配器的字段。
 
 ## 这有啥用？
 
 如果你使用一个带图形界面的操作系统，登录校园网不是什么难事——你可以直接打开浏览器，输入用户名和密码登录。但是如果你使用的是一个只有命令行界面的操作系统（比如你们实验室的 Linux 服务器），那么登录校园网就不那么方便了，这就是这个脚本的存在意义。
 
 另外你苏带的校园网经常踢人，尤其是计时收费组，你也可以把这个脚本写到一个定时任务里（比如 Cron），让它每隔一段时间自动登录一次，避免被踢，省去时不时重新登录校园网的麻烦。
-
