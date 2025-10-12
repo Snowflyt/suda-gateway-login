@@ -33,7 +33,7 @@ login() {
 
   if [[ "$json_resp" == '{"result":"1","msg":"\u8ba4\u8bc1\u6210\u529f"}' ]]; then
     echo "Login successful"
-  elif [[ "$json_resp" == '{"result":"0","msg":"","ret_code":2}' ]]; then
+  elif [[ "$json_resp" == '{"result":"0",'* && "$json_resp" == *'"ret_code":2}' ]]; then
     echo "Already logged in"
   else
     echo "Error: $json_resp"
