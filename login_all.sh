@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Login to SUDA gateway
 
@@ -15,10 +15,10 @@ if hostname -I >/dev/null 2>&1; then
 else
   all_ips=$(ifconfig | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $2 }')
 fi
-ips_to_login=()
+ips_to_login=""
 for ip in $all_ips; do
-  if [[ $ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ips_to_login+=("$ip")
+  if printf '%s\n' "$ip" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'; then
+    ips_to_login="$ips_to_login $ip"
   fi
 done
 
@@ -29,20 +29,24 @@ login() {
   ip="$3"
 
   url="http://10.9.1.3:801/eportal/?c=Portal&a=login&login_method=1&user_account=%2C0%2C$username&user_password=$password&wlan_user_ip=$ip"
-  echo "Trying to login with username=$username and password=$password via IP=$ip..."
+  printf '%s\n' "Trying to login with username=$username and password=$password via IP=$ip..."
   resp=$(curl -s "$url")
 
-  json_resp=$(echo "$resp" | sed 's/^(//' | sed 's/)$//')
+  json_resp=$(printf '%s\n' "$resp" | sed 's/^(//' | sed 's/)$//')
 
-  if [[ "$json_resp" == '{"result":"1","msg":"\u8ba4\u8bc1\u6210\u529f"}' ]]; then
+  case "$json_resp" in
+  '{"result":"1","msg":"\u8ba4\u8bc1\u6210\u529f"}')
     echo "Login successful"
-  elif [[ "$json_resp" == '{"result":"0",'* && "$json_resp" == *'"ret_code":2}' ]]; then
+    ;;
+  '{"result":"0",'*'"ret_code":2}')
     echo "Already logged in"
-  else
-    echo "Error: $json_resp"
-  fi
+    ;;
+  *)
+    printf '%s\n' "Error: $json_resp"
+    ;;
+  esac
 }
 
-for ip in "${ips_to_login[@]}"; do
+for ip in $ips_to_login; do
   login "$username" "$password" "$ip"
 done
