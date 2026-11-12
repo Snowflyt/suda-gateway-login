@@ -44,6 +44,15 @@ function Login {
     }
 }
 
+try {
+    $status = (Invoke-WebRequest -Uri "http://10.9.1.3/drcom/chkstatus?callback=x" -UseBasicParsing -TimeoutSec 5).Content
+    if ($status -match '^\s*x\(\{"result":1,') {
+        Write-Host "Already logged in"
+        exit 0
+    }
+}
+catch {}
+
 ipconfig /release
 ipconfig /renew
 

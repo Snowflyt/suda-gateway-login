@@ -28,6 +28,11 @@ login() {
   password="$2"
   ip="$3"
 
+  if curl -s -m 5 --interface "$ip" 'http://10.9.1.3/drcom/chkstatus?callback=x' | grep -q '^[[:space:]]*x({"result":1,'; then
+    printf '%s\n' "IP=$ip is already logged in, skipping..."
+    return
+  fi
+
   url="http://10.9.1.3:801/eportal/?c=Portal&a=login&login_method=1&user_account=%2C0%2C$username&user_password=$password&wlan_user_ip=$ip"
   printf '%s\n' "Trying to login with username=$username and password=$password via IP=$ip..."
   resp=$(curl -s "$url")

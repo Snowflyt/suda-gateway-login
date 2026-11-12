@@ -44,4 +44,9 @@ login() {
   esac
 }
 
+if curl -s -m 5 'http://10.9.1.3/drcom/chkstatus?callback=x' | grep -q '^[[:space:]]*x({"result":1,'; then
+  echo "Already logged in"
+  exit 0
+fi
+
 login "$username" "$password" "$ip"
